@@ -61,6 +61,22 @@ TextEditingController commentController=  TextEditingController();
       "avatarUrl":currentUser.photoUrl,
       "userId":currentUser.id,
     });
+    bool isNotPostOwner = postOwnerId != currentUser.id;
+    if(isNotPostOwner){
+      activityFeedRef
+    .doc(postOwnerId)
+    .collection('feedItems')
+    .add({
+      "type": "comment",
+      "commentData": commentController.text,
+      "timestamp":timestamp,
+      "postId":postId,
+      "userId":currentUser.id,
+      "username":currentUser.username,
+      "userProfileImg":currentUser.photoUrl,
+      "mediaUrl":postMediaUrl,
+    });
+    }
     commentController.clear();
   }
   @override

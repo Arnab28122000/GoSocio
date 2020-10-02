@@ -3,6 +3,7 @@ import 'package:GoSocio/pages/activity_feed.dart';
 import 'package:GoSocio/pages/create_account.dart';
 import 'package:GoSocio/pages/profile.dart';
 import 'package:GoSocio/pages/search.dart';
+import 'package:GoSocio/pages/timeline.dart';
 import 'package:GoSocio/pages/upload.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,6 +16,10 @@ final StorageReference storageRef = FirebaseStorage.instance.ref();
 final usersRef = FirebaseFirestore.instance.collection('users');
 final postsRef = FirebaseFirestore.instance.collection('postss');
 final commentsRef = FirebaseFirestore.instance.collection('comments');
+final activityFeedRef = FirebaseFirestore.instance.collection('feed');
+final followersRef = FirebaseFirestore.instance.collection('followers');
+final followingRef = FirebaseFirestore.instance.collection('following');
+final timelineRef = FirebaseFirestore.instance.collection('timeline');
 final DateTime timestamp = DateTime.now();
 User currentUser;
 
@@ -122,10 +127,7 @@ class _HomeState extends State<Home> {
     // );
     return Scaffold(
       body: PageView(children: <Widget>[
-        //Timeline(),
-        RaisedButton(
-          child: Text('Logout'),
-          onPressed: logout),
+        Timeline(currentUser : currentUser),
         ActivityFeed(),
         Upload(currentUser : currentUser),
         Search(),

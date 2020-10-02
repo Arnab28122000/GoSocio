@@ -1,4 +1,5 @@
 import 'package:GoSocio/models/user.dart';
+import 'package:GoSocio/pages/activity_feed.dart';
 import 'package:GoSocio/pages/home.dart';
 import 'package:GoSocio/widgets/progress.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -112,7 +113,7 @@ class UserResult extends StatelessWidget {
       child: Column(
         children: <Widget>[
           GestureDetector(
-            onTap: () => print('tapped'),
+            onTap: () => showProfile(context,profileId: user.id),
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.grey,

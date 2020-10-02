@@ -1,4 +1,7 @@
+import 'package:GoSocio/models/user.dart';
+import 'package:GoSocio/pages/home.dart';
 import 'package:GoSocio/widgets/header.dart';
+import 'package:GoSocio/widgets/post.dart';
 import 'package:GoSocio/widgets/progress.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +9,15 @@ import 'package:flutter/material.dart';
 
 final usersRef = FirebaseFirestore.instance.collection('users');
 class Timeline extends StatefulWidget {
+  final User currentUser;
+
+  Timeline({this.currentUser});
   @override
   _TimelineState createState() => _TimelineState();
 }
 
 class _TimelineState extends State<Timeline> {
+  List<Post> posts;
   List<dynamic> users=[];
 
   @override
@@ -21,6 +28,20 @@ class _TimelineState extends State<Timeline> {
     //updateUser();
     //deleteUser();
     super.initState();
+    getTimeline();
+  }
+  getTimeline() async{
+    QuerySnapshot snapshot = await timelineRef
+    .doc(widget.currentUser.id)
+    .collection('timelinePosts')
+    .orderBy('timestamp', descending: true)
+    .get();
+
+    List<Post> posts = snapshot.docs.map((doc) => Post.fromDocument(doc))
+    .toList();
+    setState(() {
+      this.posts = posts;
+    });
   }
 
   // createUser() {
@@ -71,24 +92,24 @@ class _TimelineState extends State<Timeline> {
     
   // }
 
+  buildTimeline(){
+    if(posts == null){
+      return circularProgress();
+    }else if(posts.isEmpty){
+      return Text('No posts to be displayed');
+    }else{
+      return ListView(children: posts,);
+    }
+  }
+
   @override
   Widget build(context) {
     return Scaffold(
       appBar: header(context, isAppTitle: true),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: usersRef.snapshots(),
-        builder: (context, snapshot){
-          if(!snapshot.hasData){
-            return circularProgress();
-          }
-          final List<Text> children = snapshot.data.docs.map((doc) => Text(doc.data()['username'].toString())).toList();
-          return Container(
-            child:ListView(
-              children: children,
-            ),
-          );
-        },
-      ),
+      body:RefreshIndicator(
+        child: buildTimeline(), 
+        onRefresh: () => getTimeline(),
+        ),
     );
   }
 }

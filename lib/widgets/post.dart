@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:GoSocio/models/user.dart';
+import 'package:GoSocio/pages/activity_feed.dart';
 import 'package:GoSocio/pages/comments.dart';
 import 'package:animator/animator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -102,13 +102,14 @@ class _PostState extends State<Post> {
           return circularProgress();
         }
         User user = User.fromDocument(snapshot.data);
+        bool isPostOwner = currentUserId == ownerId;
         return ListTile(
           leading: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(user.photoUrl),
             backgroundColor: Colors.grey,
           ),
           title: GestureDetector(
-            onTap: () => print("Showing Profile"),
+            onTap: () => showProfile(context, profileId: user.id),
             child: Text(
               user.username,
               style: TextStyle(
@@ -118,31 +119,102 @@ class _PostState extends State<Post> {
               ),
           ),
           subtitle: Text(location),
-          trailing: IconButton(
-            onPressed: () => print('deleting post'),
+          trailing: isPostOwner ?IconButton(
+            onPressed: () => handleDeletePost(context),
             icon: Icon(Icons.more_vert),
-            ),
+            ):null,
         );
       },
       );
+  }
+  //To delete a post ownerId and the currentUserId must be equal
+  deletePost() async{
+    //delete the owner post
+    postsRef
+    .doc(ownerId)
+    .collection('userPosts')
+    .doc(postId)
+    .get().then((doc) {
+      if(doc.exists){
+        doc.reference.delete();
+      }
+    });
+    //delete uploaded image for the post
+    storageRef.child("post_$postId.jpg").delete();
+    //then delete all activity feed notification
+    QuerySnapshot activityFeedSnapshot = await activityFeedRef
+    .doc(ownerId)
+    .collection('feedItems')
+    .where('postId', isEqualTo: postId)
+    .get();
+    activityFeedSnapshot.docs.forEach((doc) {
+      if(doc.exists){
+        doc.reference.delete();
+      }
+     });
+     //delete all comments
+     QuerySnapshot commentsSnapshot = await commentsRef
+     .doc(postId)
+     .collection('comments')
+     .get();
+     commentsSnapshot.docs.forEach((doc) {
+       if(doc.exists){
+         doc.reference.delete();
+       }
+      });
+  }
+
+  handleDeletePost(BuildContext parentContext){
+    return showDialog(
+      context: parentContext,
+      builder: (context){
+        return SimpleDialog(
+          title: Text("Remove this post?"),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: (){
+                Navigator.pop(context);
+                deletePost();
+              },
+              child: Text('Delete',
+                    style: TextStyle(color:Colors.red),
+                    ),
+            ),
+            SimpleDialogOption(
+              onPressed: ()=> Navigator.pop(context),
+              child: Text('Cancel',
+                    style: TextStyle(color:Colors.grey),
+            ),
+            ),
+          ],
+          );
+      });
   }
 
   handleLikePost(){
     bool _isLiked = likes[currentUserId] == true;
 
     if(_isLiked){
-      postsRef.doc(ownerId).collection('userPosts').doc(postId).update({
+      postsRef
+      .doc(ownerId)
+      .collection('userPosts')
+      .doc(postId).update({
         'likes.$currentUserId' : false,
       });
+      removeLikeFromActivityFeed();
       setState(() {
         likeCount-=1;
         isLiked = false;
         likes[currentUserId] = false;
       });
     }else if(!_isLiked){
-      postsRef.doc(ownerId).collection('userPosts').doc(postId).update({
+      postsRef
+      .doc(ownerId)
+      .collection('userPosts')
+      .doc(postId).update({
         'likes.$currentUserId' : true,
       });
+      addLikeToActivityFeed();
       setState(() {
         likeCount+=1;
         isLiked = true;
@@ -156,6 +228,42 @@ class _PostState extends State<Post> {
       });
     }
   }
+
+  addLikeToActivityFeed(){
+    //add a notification to the postOwner's activity feed only if the 
+    //comment made by OTHER user(to avoid getting notification for our 
+    // own like )
+    bool isNotPostOwner = currentUserId != ownerId;
+    if(isNotPostOwner){
+      activityFeedRef.doc(ownerId)
+    .collection("feedItems")
+    .doc(postId)
+    .set({
+      "type": "like",
+      "username":currentUser.username,
+      "userId":currentUser.id,
+      "userProfileImg":currentUser.photoUrl,
+      "postId":postId,
+      "mediaUrl":mediaUrl,
+      "timestamp":timestamp,
+    });
+    } 
+  }
+
+  removeLikeFromActivityFeed(){
+    bool isNotPostOwner = currentUserId != ownerId;
+    if(isNotPostOwner){
+      activityFeedRef.doc(ownerId)
+    .collection("feedItems")
+    .doc(postId)
+    .get().then((doc) {
+      if(doc.exists){
+        doc.reference.delete();
+      }
+    });
+    }
+  }
+
   buildPostImage(){
     return GestureDetector(
       onDoubleTap: handleLikePost,
@@ -198,7 +306,8 @@ class _PostState extends State<Post> {
             ),
             Padding(padding: EdgeInsets.only(right: 20.0)),
              GestureDetector(
-              onTap:() => showComments(
+              onTap:
+              () => showComments(
                 context,
                 postId: postId,
                 ownerId: ownerId,

@@ -1,20 +1,19 @@
 import 'package:GoSocio/pages/home.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
+
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized(); //The reason behind this is I am waiting for some data or running an async function inside main().
+  
+//   FirebaseFirestore.instance.settings;
+//   runApp(MyApp());
+// }
 
 void main() async {
-  
-  FirebaseFirestore.instance.settings(timestampsInSnapshotsEnaled: true)
-  .then((_){
-    print("Timestamps enabled in snapshots\n");
-  }, onError :(_){
-    print("Error enabling timestamps in snapshots\n");
-  });
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
+   WidgetsFlutterBinding.ensureInitialized();
+   await Firebase.initializeApp();
+   runApp(MyApp());
 }
 
 
