@@ -17,10 +17,8 @@ samples, guidance on mobile development, and a full API reference.
 <br><br>
 <p align="center">
   <img src="https://github.com/Arnab28122000/GoSocio/blob/master/Profile_page.JPG" width="350" title="hover text"><br>
-  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG.JPG" width="350" alt="accessibility text">
+  <img src="(https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG" width="350" title="hover text"><br>
+  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/profile_page_2.JPG" width="350" title="hover text"><br>
+  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/Search_users_screen" width="350" title="hover text"><br>
+  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/create_post_screen.JPG" width="350" alt="accessibility text">
 </p>
-![alt text](https://github.com/Arnab28122000/GoSocio/blob/master/Profile_page.JPG?raw=true)
-![alt text](https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG.JPG?raw=true)
-![alt text](https://github.com/Arnab28122000/GoSocio/blob/master/profile_page_2.JPG?raw=true)
-![alt text](https://github.com/Arnab28122000/GoSocio/blob/master/Search_users_screen.JPG?raw=true)
-![alt text](https://github.com/Arnab28122000/GoSocio/blob/master/create_post_screen.JPG?raw=true)
