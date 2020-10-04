@@ -20,21 +20,19 @@ samples, guidance on mobile development, and a full API reference.
     <tr>
       <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/Profile_page.JPG" width="230"></td>
       <td><h2>Profile Page Grid View</h2></td>
+      <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG" width="230"></td>
+       <td><h2>Timeline</h2></td> 
     </tr>
      <tr>
       <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG" width="230"></td>
        <td><h2>Timeline</h2></td>
-    </tr>
-    <tr>
-      <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/profile_page_2.JPG" width="230"></td>
+       <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/profile_page_2.JPG" width="230"></td>
       <td><h2>Profile Page List View</h2></td>
     </tr>
      <tr>
       <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/Search_users_screen.JPG" width="230"></td>
       <td><h2>Search Users Screen</h2></td>
-    </tr>
-    <tr>
-      <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/create_post_screen.JPG" width="230" alt="accessibility text"></td>
+       <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/create_post_screen.JPG" width="230" alt="accessibility text"></td>
       <td><h2>Create Post Screen</h2></td>
     </tr>
   </table>
