@@ -1,6 +1,6 @@
 # GoSocio
 
-It is a social platform for skilled people to connect, this platform will help to create job oppurtunities for the ones looking for by teaching all kinds of skills online and offline. Forum for others to connect is also available. Skill as a service will help the users to get in touch with the skilled people to learn a new skill, look for job related to the specific skill in locality and also help others learn and create a whole lot of job oppurtunities. 
+It is a social platform for skilled people to connect, this platform will help to create job oppurtunities for the ones looking for, or by teaching all kinds of skills online and offline. Forum for others to connect is also available. Skill as a service will help the users to get in touch with the skilled people to learn a new skill, look for job related to that specific skill in locality and also help others learn and create a whole lot of job oppurtunities. 
 
 ## Getting Started
 
