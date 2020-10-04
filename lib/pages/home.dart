@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:GoSocio/models/user.dart';
 import 'package:GoSocio/pages/activity_feed.dart';
 import 'package:GoSocio/pages/create_account.dart';
@@ -10,11 +11,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final StorageReference storageRef = FirebaseStorage.instance.ref();
 final usersRef = FirebaseFirestore.instance.collection('users');
-final postsRef = FirebaseFirestore.instance.collection('postss');
+final postsRef = FirebaseFirestore.instance.collection('posts');
 final commentsRef = FirebaseFirestore.instance.collection('comments');
 final activityFeedRef = FirebaseFirestore.instance.collection('feed');
 final followersRef = FirebaseFirestore.instance.collection('followers');
@@ -29,6 +32,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool isAuth = false;
   PageController pageController;
   int pageIndex =0;
@@ -52,17 +57,55 @@ class _HomeState extends State<Home> {
      });
   }
 
-  handleSignIn(GoogleSignInAccount account){
+  handleSignIn(GoogleSignInAccount account) async{
      if(account != null){
-        createUserInFireStore();
+        await createUserInFireStore();
         setState(() {
           isAuth = true;
         });
+        configurePushNotifications();
       }else{
         setState(() {
           isAuth = false;
         });
       }
+  }
+
+  configurePushNotifications(){
+    final GoogleSignInAccount user = googleSignIn.currentUser;
+    if(Platform.isIOS) getiOSPermission();
+
+    _firebaseMessaging.getToken().then((token) {
+      print("Firebase Messaging Token: $token\n");
+      usersRef
+      .doc(user.id)
+      .update({"androidNotificationToken": token});
+    });
+
+    _firebaseMessaging.configure(
+      // onLaunch: (Map<String, dynamic> message) async{},
+      // onResume:  (Map<String, dynamic> message) async{},
+      onMessage:  (Map<String, dynamic> message) async{
+        print("on message: $message\n");
+        final String recipientId = message['data']['recipient'];
+        final String body = message['notification']['body'];
+        if(recipientId == user.id){
+          print("Notification shown!");
+          SnackBar snackbar = SnackBar(content: Text(
+            body, overflow: TextOverflow.ellipsis,));
+            _scaffoldKey.currentState.showSnackBar(snackbar);
+        }
+        print("Notification Not Shown");
+      },
+    );
+  }
+
+  getiOSPermission(){
+    _firebaseMessaging.requestNotificationPermissions
+    (IosNotificationSettings(alert: true, badge: true, sound: true));
+    _firebaseMessaging.onIosSettingsRegistered.listen((settings) {
+      print("Settings registered: $settings");
+     });
   }
 
   createUserInFireStore() async{
@@ -85,6 +128,13 @@ class _HomeState extends State<Home> {
           "bio": "",
           "timestamp": timestamp,
         });
+        //make new user their own follower (to include their posts in their timeline)
+        await followersRef
+        .doc(user.id)
+        .collection('userFollowers')
+        .doc(user.id)
+        .set({});
+
         doc = await usersRef.doc(user.id).get();
     }
     currentUser = User.fromDocument(doc);
@@ -98,12 +148,12 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
-  login(){
-    googleSignIn.signIn();
+  login() async{
+    await googleSignIn.signIn();
   }
 
-  logout(){
-    googleSignIn.signOut();
+  logout() async{
+    await googleSignIn.signOut();
   }
 
   onPageChanged(int pageIndex){
@@ -126,7 +176,9 @@ class _HomeState extends State<Home> {
     //   onPressed: logout,
     // );
     return Scaffold(
-      body: PageView(children: <Widget>[
+      key: _scaffoldKey,
+      body: PageView(
+        children: <Widget>[
         Timeline(currentUser : currentUser),
         ActivityFeed(),
         Upload(currentUser : currentUser),

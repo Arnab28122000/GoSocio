@@ -1,5 +1,6 @@
 import 'package:GoSocio/models/user.dart';
 import 'package:GoSocio/pages/home.dart';
+import 'package:GoSocio/pages/search.dart';
 import 'package:GoSocio/widgets/header.dart';
 import 'package:GoSocio/widgets/post.dart';
 import 'package:GoSocio/widgets/progress.dart';
@@ -18,6 +19,7 @@ class Timeline extends StatefulWidget {
 
 class _TimelineState extends State<Timeline> {
   List<Post> posts;
+  List<String> followingList = [];
   List<dynamic> users=[];
 
   @override
@@ -29,6 +31,7 @@ class _TimelineState extends State<Timeline> {
     //deleteUser();
     super.initState();
     getTimeline();
+    getFollowing();
   }
   getTimeline() async{
     QuerySnapshot snapshot = await timelineRef
@@ -41,6 +44,16 @@ class _TimelineState extends State<Timeline> {
     .toList();
     setState(() {
       this.posts = posts;
+    });
+  }
+
+  getFollowing() async{
+    QuerySnapshot snapshot = await followingRef
+    .doc(currentUser.id)
+    .collection('userFollowing')
+    .get();
+    setState(() {
+      followingList = snapshot.docs.map((doc) => doc.id).toList();
     });
   }
 
@@ -96,10 +109,65 @@ class _TimelineState extends State<Timeline> {
     if(posts == null){
       return circularProgress();
     }else if(posts.isEmpty){
-      return Text('No posts to be displayed');
+      return buildUsersToFollow();
     }else{
       return ListView(children: posts,);
     }
+  }
+
+  buildUsersToFollow(){
+    return StreamBuilder(
+      stream: usersRef.orderBy('timestamp',descending: true).limit(30).snapshots(),
+      builder: (context, snapshot){
+        if(!snapshot.hasData){
+          return circularProgress();
+        }
+        List<UserResult> userResults=[];
+        snapshot.data.documents.forEach((doc){
+          User user = User.fromDocument(doc);
+          final bool isAuthUser = currentUser.id == user.id;
+          final bool isFollowingUser = followingList.contains(user.id);
+          // removing auth user from recommended list
+          if(isAuthUser){
+            return;
+          }else if(isFollowingUser){
+            return;
+          }else{
+            UserResult userResult = UserResult(user);
+            userResults.add(userResult);
+          }
+        });
+        return Container(
+            color: Theme.of(context).accentColor.withOpacity(0.2),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.person_add,
+                        color: Theme.of(context).primaryColor,
+                        size: 30.0,
+                      ),
+                      SizedBox(width: 8.0,),
+                      Text(
+                        "Users to Follow",
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 30.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(children: userResults,),
+              ],
+            ),
+            );
+      },
+    );
   }
 
   @override

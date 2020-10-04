@@ -1,7 +1,6 @@
 import 'package:GoSocio/widgets/header.dart';
 import 'package:GoSocio/widgets/post.dart';
 import 'package:GoSocio/widgets/progress.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:GoSocio/pages/home.dart';
 
@@ -21,8 +20,10 @@ class PostScreen extends StatelessWidget {
       .doc(userId)
       .collection('userPosts')
       .doc(postId).get(),
-      builder: (context, snapshot){
+      builder: (BuildContext context, snapshot){
         if(!snapshot.hasData){
+          return circularProgress();
+        }else if(snapshot.connectionState == null){
           return circularProgress();
         }
           Post post = Post.fromDocument(snapshot.data);

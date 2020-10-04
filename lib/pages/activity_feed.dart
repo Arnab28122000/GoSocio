@@ -15,17 +15,16 @@ class ActivityFeed extends StatefulWidget {
 
 class _ActivityFeedState extends State<ActivityFeed> {
   getActivityFeed() async{
-    Future<QuerySnapshot> snapshot = activityFeedRef.doc(currentUser.id)
+    QuerySnapshot snapshot = await activityFeedRef
+    .doc(currentUser.id)
     .collection('feedItems')
     .orderBy('timestamp', descending: true)
     .limit(50).get();
     List<ActivityFeedItem> feedItems = [];
-    snapshot.then((snap){
-      snap.docs.forEach((doc) {
+      snapshot.docs.forEach((doc) {
         feedItems.add(ActivityFeedItem.fromDocument(doc));
         //print('Activity Feed Item: ${doc.data()}');
        });
-    });
     return feedItems;
   }
   @override
@@ -178,7 +177,9 @@ class ActivityFeedItem extends StatelessWidget {
 }
 
 showProfile(BuildContext context, {String profileId}){
-  Navigator.push(context, MaterialPageRoute(builder: (context) => 
+  Navigator.push(context, 
+  MaterialPageRoute(
+    builder: (context) => 
   Profile(profileId: profileId,)
   ),);
 }
