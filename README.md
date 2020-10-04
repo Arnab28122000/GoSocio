@@ -15,10 +15,27 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 <br><br>
-<p align="center">
-  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/Profile_page.JPG" width="350" title="Profile Page"><br>
-  <img src="(https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG" width="350" title="Timeline"><br>
-  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/profile_page_2.JPG" width="350" title="Profile"><br>
-  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/Search_users_screen" width="350" title="Search Users Screen"><br>
-  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/create_post_screen.JPG" width="350" alt="accessibility text">
+<p>
+  <table>
+    <tr>
+      <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/Profile_page.JPG" width="350"></td>
+      <td><h2>Profile Page</h2></td>
+    </tr>
+     <tr>
+      <td><img src="(https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG" width="350"></td>
+       <td><h2>Timeline</h2></td>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/profile_page_2.JPG" width="350"></td>
+      <td><h2>Profile page</h2></td>
+    </tr>
+     <tr>
+      <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/Search_users_screen" width="350"></td>
+      <td><h2>Search Users Screen</h2></td>
+    </tr>
+    <tr>
+      <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/create_post_screen.JPG" width="350" alt="accessibility text"></td>
+      <td><h2>Create Post Screen</h2></td>
+    </tr>
+  </table>
 </p>
