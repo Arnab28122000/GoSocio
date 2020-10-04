@@ -16,9 +16,9 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 <br><br>
 <p align="center">
-  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/Profile_page.JPG" width="350" title="hover text"><br>
-  <img src="(https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG" width="350" title="hover text"><br>
-  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/profile_page_2.JPG" width="350" title="hover text"><br>
-  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/Search_users_screen" width="350" title="hover text"><br>
+  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/Profile_page.JPG" width="350" title="Profile Page"><br>
+  <img src="(https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG" width="350" title="Timeline"><br>
+  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/profile_page_2.JPG" width="350" title="Profile"><br>
+  <img src="https://github.com/Arnab28122000/GoSocio/blob/master/Search_users_screen" width="350" title="Search Users Screen"><br>
   <img src="https://github.com/Arnab28122000/GoSocio/blob/master/create_post_screen.JPG" width="350" alt="accessibility text">
 </p>
