@@ -14,3 +14,8 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+![alt text](https://github.com/Arnab28122000/GoSocio/blob/master/Profile_page.JPG?raw=true)
+![alt text](https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG.JPG?raw=true)
+![alt text](https://github.com/Arnab28122000/GoSocio/blob/master/profile_page_2.JPG?raw=true)
+![alt text](https://github.com/Arnab28122000/GoSocio/blob/master/Search_users_screen.JPG?raw=true)
+![alt text](https://github.com/Arnab28122000/GoSocio/blob/master/create_post_screen.JPG?raw=true)
