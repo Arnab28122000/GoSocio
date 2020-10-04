@@ -19,7 +19,7 @@ samples, guidance on mobile development, and a full API reference.
   <table border=0>
     <tr>
       <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/Profile_page.JPG" width="350"></td>
-      <td><h2>Profile Page</h2></td>
+      <td><h2>Profile Page Grid View</h2></td>
     </tr>
      <tr>
       <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/Timeline.JPG" width="350"></td>
@@ -27,7 +27,7 @@ samples, guidance on mobile development, and a full API reference.
     </tr>
     <tr>
       <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/profile_page_2.JPG" width="350"></td>
-      <td><h2>Profile page</h2></td>
+      <td><h2>Profile Page List View</h2></td>
     </tr>
      <tr>
       <td><img src="https://github.com/Arnab28122000/GoSocio/blob/master/Search_users_screen.JPG" width="350"></td>
